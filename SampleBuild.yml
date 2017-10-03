@@ -1,0 +1,30 @@
+---
+- name: Playbook for _shellscript_Build
+  hosts: all
+  remote_user: root
+  gather_facts: false
+  vars:
+    project_dir_path: '/export/home/wsadmin/app/sample_data/Build/'
+    project_name: Build
+    root_path: /app/sample/PlatformServices/6.1.3
+    svn_root_path: /app/sample/SVN
+    conf_path: /app/sample/PlatformServices/workspace/
+  environment:
+    PROJECT_DIR: "{{ project_dir_path }}"
+    PROJECT_NAME: "{{ project_name }}"
+    ROOT: "{{ root_path }}"
+    PERLLIB: "{{ root_path }}"/lib/perl:"{{ root_path }}"/lib/perl/Control:"{{ root_path }}"/perl/lib:"{{ root_path }}"/perl/lib/site_per
+l:$PERLLIB
+    PERL5LIB: "{{ root_path }}"/lib/perl/Control:"{{ root_path }}"/perl/lib:"{{ root_path }}"/perl/lib/site_perl:$PERL5LIB
+    PATH: "{{ root_path }}"/bin:"{{ root_path }}"/perl/bin:"{{ root_path }}"/tools/server/bin:"{{ root_path }}"/utilities:$PATH
+    JAVA_HOME: "{{ root_path }}"/j2sdk:$JAVA_HOME
+    SVN_ROOT: "{{ _svn_root_path }}"
+    CONF: "{{ conf_path }}"
+  tasks:
+   # keep runcommand.sh in files folder
+    - name: copy runcommand.sh to agents
+      copy:
+        src: files/runcommand.sh
+        dest: /export/home/wsadmin/app/data/Build/config/script
+    - name: Execute runcommand.sh
+      shell: /export/home/wsadmin/app/data/Build/config/script/runcommand.sh Build run
