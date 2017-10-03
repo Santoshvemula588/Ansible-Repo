@@ -1,0 +1,17 @@
+---
+- name: Plabook for environment variables updates
+  # Author : Santosh
+  # Please mention the hostname as specified in /etc/ansible/hosts
+  hosts: all
+  remote_user: wsadmin
+  gather_facts: "no"
+  vars:
+    dir_search: '/app/bbb/sqs/conf'
+    restartdir: '/etc/init.d'
+  tasks:
+    blockinfile:
+      path: /export/home/wsadmin/"{{ dir_search }}"/environment.properties
+      insertafter: EOF
+      block: |
+       /od/config/filemanager/secure/location=https://filelocation.com > /od/config/filemanager/abs/location=//filelocation.com
+
