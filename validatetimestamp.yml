@@ -1,0 +1,31 @@
+---
+- name: Validating build with time stamp
+  hosts: localhost
+  gather_facts: false
+  vars:
+  tasks:
+    - name: fetching the timestamp of build
+      stat:
+        path: "/export/home/wsadmin/DONOTDELETE/prfm_bk/source/first.txt"
+        register: fst
+
+    - name: Converting Date Format
+      local_action: shell date -d@"{{ fst.stat.mtime }}"
+      register: dateop
+
+    - name: Printing the last modified file time
+      debug:
+        msg: "last modfication time of the file is {{ dateop.stdout }}"
+    
+    - name: fetching the timestamp of build
+      stat:
+        path: "/export/home/wsadmin/DONOTDELETE/prfm_bk/destination/second.txt"
+        register: fst
+
+    - name: Converting Date Format
+      local_action: shell date -d@"{{ fst.stat.mtime }}"
+      register: dateop
+
+    - name: Printing the last modified file time
+      debug:
+        msg: "last modfication time of the file is {{ dateop.stdout }}"
